@@ -59,7 +59,13 @@
                                     @enderror
                                 </div>
                                 <button type="submit" class="btn btn-primary">Add Category</button>
-                            </form>
+                            </form><br>
+                            @if(session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>{{session('success')}}</strong>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
