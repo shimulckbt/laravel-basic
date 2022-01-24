@@ -10,10 +10,22 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
+    /////      Eloquent ORM      /////
+
     public function allCategory()
     {
-        return view('admin.category.index');
+        $categories = Category::latest()->paginate(5);
+        return view('admin.category.index', compact('categories'));
     }
+
+    /////      Query Builder    /////
+
+    // public function allCategory()
+    // {
+    //     $categories = DB::table('categories')->join('users', 'categories.user_id', 'users.id')->select('categories.*', 'users.name')->latest()->paginate(5);
+    //     // $categories = DB::table('categories')->latest()->paginate(5);
+    //     return view('admin.category.index', compact('categories'));
+    // }
 
     public function addCategory(Request $request)
     {
@@ -38,10 +50,10 @@ class CategoryController extends Controller
 
         /////        Best Practice Eloquent ORM          /////
 
-        // $category = new Category;
-        // $category->category_name = $request->category_name;
-        // $category->user_id = Auth::user()->id;
-        // $category->save();
+        $category = new Category;
+        $category->category_name = $request->category_name;
+        $category->user_id = Auth::user()->id;
+        $category->save();
 
         /////        Query Builder Approach         /////
 

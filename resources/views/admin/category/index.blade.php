@@ -25,22 +25,32 @@
                         </div>
                         <table class="table">
                             <thead>
+
                                 <tr>
                                     <th scope="col">SL NO</th>
                                     <th scope="col">CATEGORY NAME</th>
-                                    <th scope="col">EMAIL</th>
+                                    <th scope="col">User Name</th>
                                     <th scope="col">Created At</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($categories as $category)
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <th scope="row">{{$categories->firstItem()+$loop->index}}</th>
+                                    <td>{{$category->category_name}}</td>
+                                    <td>{{$category->name}}</td>
+                                    <td>
+                                        @if($category->created_at == NULL)
+                                        <span class="text-danger">Date not set..!</span>
+                                        @else
+                                        {{Carbon\Carbon::parse($category->created_at)->diffForHumans()}}
+                                        @endif
+                                    </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
+                        {{$categories->links()}}
                     </div>
                 </div>
                 <div class="col-md-4">
