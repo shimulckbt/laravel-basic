@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CategoryController;
@@ -21,6 +22,8 @@ Route::get('/contact', function () {
 
 Route::get('/index', [ContactController::class, 'index'])->name('conn');
 
+/////        CATEGORY ROUTE       /////
+
 Route::get('/categoty/all', [CategoryController::class, 'allCategory'])->name('all.category');
 Route::post('/categoty/add', [CategoryController::class, 'addCategory'])->name('store.category');
 
@@ -30,7 +33,13 @@ Route::get('/category/softDelete/{id}', [CategoryController::class, 'softDelete'
 Route::get('/category/restore/{id}', [CategoryController::class, 'restoreCategory']);
 Route::get('/category/clear/{id}', [CategoryController::class, 'clearCategory']);
 
+/////        BRAND ROUTE        /////
 
+Route::get('/brand/all', [BrandController::class, 'allBrand'])->name('all.brand');
+Route::post('/brand/add', [BrandController::class, 'addBrand'])->name('add.brand');
+Route::get('/brand/edit/{id}', [BrandController::class, 'editBrand']);
+Route::post('/brand/update/{id}', [BrandController::class, 'updateBrand']);
+Route::get('/brand/delete/{id}', [BrandController::class, 'deleteBrand']);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     $users = User::all();
