@@ -21,8 +21,13 @@
                     <div class="card">
                         <div class="card-header">
                             All Categories
-
                         </div>
+                        @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>{{session('success')}}</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
                         <table class="table">
                             <thead>
 
@@ -31,6 +36,7 @@
                                     <th scope="col">CATEGORY NAME</th>
                                     <th scope="col">User Name</th>
                                     <th scope="col">Created At</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,13 +44,17 @@
                                 <tr>
                                     <th scope="row">{{$categories->firstItem()+$loop->index}}</th>
                                     <td>{{$category->category_name}}</td>
-                                    <td>{{$category->name}}</td>
+                                    <td>{{$category->user->name}}</td>
                                     <td>
                                         @if($category->created_at == NULL)
                                         <span class="text-danger">Date not set..!</span>
                                         @else
-                                        {{Carbon\Carbon::parse($category->created_at)->diffForHumans()}}
+                                        {{$category->created_at->diffForHumans()}}
                                         @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{url('category/edit/'.$category->id)}}" class="btn btn-info">Edit</a>
+                                        <a href="{{url('category/softDelete/'.$category->id)}}" class="btn btn-danger">Delete</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -70,13 +80,54 @@
                                 </div>
                                 <button type="submit" class="btn btn-primary">Add Category</button>
                             </form><br>
-                            @if(session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <strong>{{session('success')}}</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                            @endif
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Trashed Data With Soft DELETE-->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            Trashed List
+                        </div>
+                        <table class="table">
+                            <thead>
+
+                                <tr>
+                                    <th scope="col">SL NO</th>
+                                    <th scope="col">CATEGORY NAME</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($trashCat as $category)
+                                <tr>
+                                    <th scope="row">{{$categories->firstItem()+$loop->index}}</th>
+                                    <td>{{$category->category_name}}</td>
+                                    <td>{{$category->user->name}}</td>
+                                    <td>
+                                        @if($category->created_at == NULL)
+                                        <span class="text-danger">Date not set..!</span>
+                                        @else
+                                        {{$category->created_at->diffForHumans()}}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{url('category/restore/'.$category->id)}}" class="btn btn-info">Restore</a>
+                                        <a href="{{url('category/clear/'.$category->id)}}" class="btn btn-danger">Clear</a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        {{$trashCat->links()}}
                     </div>
                 </div>
             </div>

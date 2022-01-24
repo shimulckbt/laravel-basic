@@ -24,6 +24,13 @@ Route::get('/index', [ContactController::class, 'index'])->name('conn');
 Route::get('/categoty/all', [CategoryController::class, 'allCategory'])->name('all.category');
 Route::post('/categoty/add', [CategoryController::class, 'addCategory'])->name('store.category');
 
+Route::get('/category/edit/{id}', [CategoryController::class, 'editCategory']);
+Route::post('/category/update/{id}', [CategoryController::class, 'updateCategory']);
+Route::get('/category/softDelete/{id}', [CategoryController::class, 'softDelete']);
+Route::get('/category/restore/{id}', [CategoryController::class, 'restoreCategory']);
+Route::get('/category/clear/{id}', [CategoryController::class, 'clearCategory']);
+
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     $users = User::all();
