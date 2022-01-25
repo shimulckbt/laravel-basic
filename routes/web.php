@@ -8,6 +8,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
 Route::get('/', function () {
     return view('home');
 });
@@ -40,6 +44,11 @@ Route::post('/brand/add', [BrandController::class, 'addBrand'])->name('add.brand
 Route::get('/brand/edit/{id}', [BrandController::class, 'editBrand']);
 Route::post('/brand/update/{id}', [BrandController::class, 'updateBrand']);
 Route::get('/brand/delete/{id}', [BrandController::class, 'deleteBrand']);
+
+/////      Multiple Image Route    /////
+
+Route::get('/multiple-image', [BrandController::class, 'multipleImage'])->name('multi.image');
+Route::post('/multiple-image/create', [BrandController::class, 'addMultipleImage'])->name('multiple-image.add');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     $users = User::all();

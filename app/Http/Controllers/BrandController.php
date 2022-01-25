@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\BrandModel;
+use App\Models\MulripleImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Image;
 
 class BrandController extends Controller
 {
+    /////      Auth Middleware     /////
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function allBrand()
     {
         $brands = BrandModel::latest()->paginate(5);
@@ -31,12 +39,26 @@ class BrandController extends Controller
         );
 
         $brand_image = $request->file('brand_image');
-        $name_gen = hexdec(uniqid());
-        $img_ext = strtolower($brand_image->getClientOriginalExtension());
-        $img_name = $name_gen . '.'  . $img_ext;
-        $up_location = 'image/brand/';
-        $last_img = $up_location . $img_name;
-        $brand_image->move($up_location, $img_name);
+
+        /////     Without Image Intervention     /////
+
+        // $name_gen = hexdec(uniqid());
+        // $img_ext = strtolower($brand_image->getClientOriginalExtension());
+        // $img_name = $name_gen . '.'  . $img_ext;
+        // $up_location = 'image/brand/';
+        // $last_img = $up_location . $img_name;
+        // $brand_image->move($up_location, $img_name);
+
+        // $brand = new BrandModel;
+        // $brand->brand_name = $request->brand_name;
+        // $brand->brand_image = $last_img;
+        // $brand->save();
+
+        /////     Without Image Intervention     /////
+
+        $name_gen = hexdec(uniqid()) . '.' . $brand_image->getClientOriginalExtension();
+        $last_img = 'image/brand/' . $name_gen;
+        Image::make($brand_image)->resize(300, 200)->save($last_img); // With Image Intervention
 
         $brand = new BrandModel;
         $brand->brand_name = $request->brand_name;
@@ -108,87 +130,28 @@ class BrandController extends Controller
         BrandModel::find($id)->delete();
         return Redirect()->back()->with('success', 'Brand Deleted Successfully');
     }
+
+    /////        Multiple Image     /////
+
+    public function multipleImage()
+    {
+        $images = MulripleImage::all();
+        return view('admin.multipleimage.index', compact('images'));
+    }
+
+    public function addMultipleImage(Request $request)
+    {
+        $multiple_images = $request->file('multiple_image');
+
+        foreach ($multiple_images as $multiple_image) {
+            $name_gen = hexdec(uniqid()) . '.' . $multiple_image->getClientOriginalExtension();
+            $last_img = 'image/multiple_image/' . $name_gen;
+            Image::make($multiple_image)->resize(300, 200)->save($last_img); // With Image Intervention
+
+            $multi = new MulripleImage;
+            $multi->image = $last_img;
+            $multi->save();
+        }
+        return Redirect()->back()->with('success', 'Images Inserted Successfully');
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// /////      Eloquent ORM SHOW Data      /////
-//     public function allbrand()
-//     {
-//         $categories = brand::latest()->paginate(5);
-//         $trashCat = brand::onlyTrashed()->latest()->paginate(3);
-//         return view('admin.brand.index', compact('categories', 'trashCat'));
-//     }
-//     public function addbrand(Request $request)
-//     {
-//         $validatedData = $request->validate(
-//             [
-//                 'brand_name' => 'required|unique:categories|max:255'
-//             ],
-//             [
-//                 'brand_name.required' => 'Please Input a Valid brand Name...!',
-//                 'brand_name.max' => 'brand Name Should Be Less Then 255...!',
-//                 'brand_name.unique' => 'brand Name Should Be Unique...!'
-//             ]
-
-//         );
-
-//         $brand = new brand;
-//         $brand->brand_name = $request->brand_name;
-//         $brand->user_id = Auth::user()->id;
-//         $brand->save();
-//         return Redirect()->back()->with('success', 'brand Inserted Successfully');
-//     }
-
-//     /////     Eloquent ORM UPDATE      /////
-
-//     public function editbrand($id)
-//     {
-//         $brand_id = brand::find($id);
-//         return view('admin.brand.edit', compact('brand_id'));
-//     }
-
-//     public function updatebrand(Request $request, $id)
-//     {
-//         $brand_id = brand::find($id)->update([
-//             'brand_name' => $request->brand_name,
-//             'user_id' => Auth::user()->id,
-//         ]);
-//         return Redirect()->route('all.brand')->with('success', 'brand Updated Successfully');
-//     }
-
-//     /////      Elequent ORM SOFT DELETE     /////
-
-//     public function softDelete($id)
-//     {
-//         $delete = brand::find($id)->delete();
-//         return Redirect()->back()->with('success', 'brand Soft Deleted Successfully');
-//     }
-
-//     public function restorebrand($id)
-//     {
-//         $restore_data = brand::withTrashed()->find($id)->restore();
-//         return Redirect()->back()->with('success', 'brand Restored Successfully');
-//     }
-
-//     public function clearbrand($id)
-//     {
-//         $clear = brand::onlyTrashed()->find($id)->forceDelete();
-//         return Redirect()->back()->with('success', 'brand Permenantly Deleted');
-//     }

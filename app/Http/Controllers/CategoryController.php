@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
+    /////      Auth Middleware     /////
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /////      Eloquent ORM SHOW Data      /////
 
     public function allCategory()
