@@ -50,8 +50,9 @@ Route::get('/brand/delete/{id}', [BrandController::class, 'deleteBrand']);
 Route::get('/multiple-image', [BrandController::class, 'multipleImage'])->name('multi.image');
 Route::post('/multiple-image/create', [BrandController::class, 'addMultipleImage'])->name('multiple-image.add');
 
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    $users = User::all();
+    // $users = User::all();
     // $users = DB::table('users')->get();
-    return view('dashboard', compact('users'));
+    return view('admin.index');
 })->name('dashboard');
