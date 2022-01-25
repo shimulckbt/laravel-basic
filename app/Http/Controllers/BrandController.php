@@ -7,6 +7,7 @@ use App\Models\MulripleImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Image;
+use Auth;
 
 class BrandController extends Controller
 {
@@ -153,5 +154,11 @@ class BrandController extends Controller
             $multi->save();
         }
         return Redirect()->back()->with('success', 'Images Inserted Successfully');
+    }
+
+    public function Logout()
+    {
+        Auth::logout();
+        return Redirect()->route('login')->with('success', 'User Logged Out..!');
     }
 }
