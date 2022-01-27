@@ -70,7 +70,7 @@ class CategoryController extends Controller
         // $data['user_id'] = Auth::user()->id;
         // DB::table('categories')->insert($data);
 
-        return Redirect()->back()->with('success', 'Category Inserted Successfully');
+        return Redirect()->back()->with('success', 'Category Created Successfully');
     }
 
     /////     Eloquent ORM UPDATE      /////
@@ -111,7 +111,7 @@ class CategoryController extends Controller
     public function softDelete($id)
     {
         $delete = Category::find($id)->delete();
-        return Redirect()->back()->with('success', 'Category Soft Deleted Successfully');
+        return Redirect()->back()->with('success', 'Category Moved To Trash Bin Successfully');
     }
 
     public function restoreCategory($id)

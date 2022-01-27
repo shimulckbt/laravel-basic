@@ -34,7 +34,7 @@ class HomeController extends Controller
 
         $name_gen = hexdec(uniqid()) . '.' . $images->getClientOriginalExtension();
         $last_img = 'image/slider/' . $name_gen;
-        Image::make($images)->resize(1920, 1088)->save($last_img); // With Image Intervention
+        Image::make($images)->resize(1920, 1088)->save($last_img); // With Image Intervention Package
 
         Slider::insert([
             'title' => $request->title,
@@ -43,6 +43,6 @@ class HomeController extends Controller
             'created_at' => Carbon::now()
         ]);
 
-        return Redirect()->route('home.slider')->with('success', 'Slider Inserted Successfully');
+        return Redirect()->route('home.slider')->with('success', 'Slider Uploaded Successfully');
     }
 }

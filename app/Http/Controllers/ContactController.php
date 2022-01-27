@@ -8,6 +8,6 @@ class ContactController extends Controller
 {
     public function index()
     {
-        echo "hello gays";
+        echo "Successfully Connected..!!";
     }
 }
