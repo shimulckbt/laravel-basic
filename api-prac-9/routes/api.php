@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 // Route::get('categories', [CategoryController::class, 'index']);
 // Route::post('categories/store', [CategoryController::class, 'store']);
 
-Route::resource('categories', CategoryController::class);
+Route::apiResource('categories', CategoryController::class);
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

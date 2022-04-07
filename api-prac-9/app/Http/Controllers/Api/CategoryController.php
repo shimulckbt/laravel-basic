@@ -8,48 +8,47 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    // public function index()
-    // {
-    //     return response()->json([
-    //         'status' => 200,
-    //         'message' => 'wecome to hell'
-    //     ]);
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     return response()->json([
-    //         'form_request' => $request->all(),
-    //     ]);
-    // }
-
     public function index()
     {
-    }
+        $cat = Category::latest()->get();
 
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully retrieved category',
+            'data' => $cat,
+        ]);
+    }
 
     public function create()
     {
+        //
     }
 
     public function store(Request $request)
     {
+        //
+    }
+
+    public function show($id)
+    {
+        //
     }
 
 
-    public function show(Category $Category)
+    public function edit($id)
     {
+        //
     }
 
-    public function edit(Category $Category)
+
+    public function update(Request $request, $id)
     {
+        //
     }
 
-    public function update(Request $request, Category $Category)
-    {
-    }
 
-    public function destroy(Category $Category)
+    public function destroy($id)
     {
+        //
     }
 }
