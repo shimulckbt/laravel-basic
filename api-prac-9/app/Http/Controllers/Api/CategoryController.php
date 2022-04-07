@@ -68,20 +68,57 @@ class CategoryController extends Controller
     }
 
 
-    public function edit($id)
-    {
-        //
-    }
-
-
     public function update(Request $request, $id)
     {
-        //
+        $cat = Category::find($id);
+        if (!$cat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Not Found ',
+                'errors' => [],
+            ], 404);
+        }
+
+        $data = Validator::make($request->all(), [
+            'name' => 'required|string|unique:categories,name,' . $cat->id,
+        ]);
+
+        if ($data->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error',
+                'errors' => $data->getMessageBag(),
+            ], 422);
+        }
+        $formData = $data->validated();
+        $formData['slug'] = Str::slug($formData['name']);
+        $cat->update($formData);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully updated',
+            'data' => $cat,
+        ], 200);
     }
 
 
     public function destroy($id)
     {
-        //
+        $cat = Category::find($id);
+        if (!$cat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Not Found ',
+                'errors' => [],
+            ], 404);
+        }
+
+        $cat->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully Deleted',
+            'data' => $cat,
+        ], 200);
     }
 }
