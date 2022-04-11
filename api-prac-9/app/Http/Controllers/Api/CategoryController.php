@@ -49,38 +49,37 @@ class CategoryController extends Controller
         ], 405);
     }
 
-    public function show($id)
+    public function show(Category $category)
     {
-        $cat = Category::find($id);
-        if (!$cat) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Not Found ',
-                'errors' => [],
-            ], 404);
-        } else {
-            return response()->json([
-                'success' => true,
-                'message' => 'Successfully found',
-                'data' => $cat,
-            ], 405);
-        }
+        // $cat = Category::find($id);
+        // if (!$cat) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Not Found ',
+        //         'errors' => [],
+        //     ], 404);
+        // }
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully found',
+            'data' => $category,
+        ], 405);
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        $cat = Category::find($id);
-        if (!$cat) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Not Found ',
-                'errors' => [],
-            ], 404);
-        }
+        // $cat = Category::find($id);
+        // if (!$cat) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Not Found ',
+        //         'errors' => [],
+        //     ], 404);
+        // }
 
         $data = Validator::make($request->all(), [
-            'name' => 'required|string|unique:categories,name,' . $cat->id,
+            'name' => 'required|string|unique:categories,name,' . $category->id,
         ]);
 
         if ($data->fails()) {
@@ -92,33 +91,33 @@ class CategoryController extends Controller
         }
         $formData = $data->validated();
         $formData['slug'] = Str::slug($formData['name']);
-        $cat->update($formData);
+        $category->update($formData);
 
         return response()->json([
             'success' => true,
             'message' => 'Successfully updated',
-            'data' => $cat,
+            'data' => $category,
         ], 200);
     }
 
 
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        $cat = Category::find($id);
-        if (!$cat) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Not Found ',
-                'errors' => [],
-            ], 404);
-        }
+        // $cat = Category::find($id);
+        // if (!$cat) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Not Found ',
+        //         'errors' => [],
+        //     ], 404);
+        // }
 
-        $cat->delete();
+        $category->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'Successfully Deleted',
-            'data' => $cat,
+            'data' => $category,
         ], 200);
     }
 }
