@@ -100,4 +100,25 @@ class CategoryController extends Controller
             'data' => $cat,
         ], 200);
     }
+
+
+    public function destroy($id)
+    {
+        $cat = Category::find($id);
+        if (!$cat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Not Found ',
+                'errors' => [],
+            ], 404);
+        }
+
+        $cat->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully Deleted',
+            'data' => $cat,
+        ], 200);
+    }
 }
