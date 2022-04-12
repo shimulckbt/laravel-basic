@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ErrorResource;
+use App\Http\Resources\SuccessResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -45,11 +46,13 @@ class CategoryController extends Controller
         $formData['slug'] = Str::slug($formData['name']);
         $cat = Category::create($formData);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully created',
-            'data' => $cat,
-        ], 405);
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Successfully created',
+        //     'data' => $cat,
+        // ], 405);
+
+        return (new SuccessResource(['message' => 'Category Successfully Created']))->response()->setStatusCode(201);
     }
 
     public function show(Category $category)
