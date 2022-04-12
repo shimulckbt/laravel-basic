@@ -16,10 +16,6 @@ class ErrorResource extends JsonResource
     public function toArray($request)
     {
         // return parent::toArray($request);
-        return [
-            'success' => true,
-            'message' => 'Error',
-            'erros' => parent::toArray($request)
-        ];
+
     }
 }
