@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ErrorResource;
 use App\Http\Resources\SuccessResource;
 use App\Models\Category;
@@ -16,11 +17,13 @@ class CategoryController extends Controller
     {
         $cat = Category::latest()->get();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully retrieved category',
-            'data' => $cat,
-        ]);
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Successfully retrieved category',
+        //     'data' => $cat,
+        // ]);
+
+        return new CategoryResource($cat);
     }
 
     public function store(Request $request)
