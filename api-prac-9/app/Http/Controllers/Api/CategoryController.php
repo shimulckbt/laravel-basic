@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ErrorResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -32,11 +33,13 @@ class CategoryController extends Controller
         ]);
 
         if ($data->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error',
-                'errors' => $data->getMessageBag(),
-            ], 405);
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'Error',
+            //     'errors' => $data->getMessageBag(),
+            // ], 422);
+
+            return (new ErrorResource($data->getMessageBag()))->response()->setStatusCode(422);
         }
         $formData = $data->validated();
         $formData['slug'] = Str::slug($formData['name']);
