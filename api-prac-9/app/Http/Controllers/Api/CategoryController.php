@@ -27,7 +27,26 @@ class CategoryController extends Controller
         //     'name' => 'required|string|unique:categories',
         // ]);
 
+        $data = Validator::make($request->all(), [
+            'name' => 'required|string|unique:categories',
+        ]);
 
+        if ($data->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error',
+                'errors' => $data->getMessageBag(),
+            ], 405);
+        }
+        $formData = $data->validated();
+        $formData['slug'] = Str::slug($formData['name']);
+        $cat = Category::create($formData);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully created',
+            'data' => $cat,
+        ], 405);
     }
 
     public function show(Category $category)
